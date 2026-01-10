@@ -1,8 +1,6 @@
 package com.example.tpradio.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import kotlinx.coroutines.delay
