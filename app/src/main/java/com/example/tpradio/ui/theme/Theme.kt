@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 @OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun TPRadioTheme(
-    intervalMillis: Long = 1 * 10 * 1000,
+    intervalMillis: Long = 2 * 60 * 1000,
     syncToTrack: Boolean = false,
     trackThemeIndex: Int? = null,
     onSchemeChanged: (Int) -> Unit = {},
