@@ -1,7 +1,7 @@
 <img width="320" height="180" alt="image" src="https://github.com/user-attachments/assets/2426ce05-d69b-46ba-bc28-b5fe845494d2" />
 
 # tp-radio-tv
-A simple Android TV app for streaming Evian Christs [TP Radio](https://www.tranceparty.net/).
+A simple Android TV app for streaming Evian Christ's [TP Radio](https://www.tranceparty.net/).
 
 
 
