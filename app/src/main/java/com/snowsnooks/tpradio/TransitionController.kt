@@ -1,4 +1,4 @@
-package com.example.tpradio
+package com.snowsnooks.tpradio
 
 import androidx.compose.runtime.*
 import kotlinx.coroutines.delay

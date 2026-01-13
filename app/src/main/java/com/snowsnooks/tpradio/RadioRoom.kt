@@ -1,4 +1,4 @@
-package com.example.tpradio
+package com.snowsnooks.tpradio
 
 data class RadioRoom(
     val name: String,

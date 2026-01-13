@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tpradio"
+    namespace = "com.snowsnooks.tpradio"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.tpradio"
+        applicationId = "com.snowsnooks.tpradio"
         minSdk = 23
         targetSdk = 36
         versionCode = 1

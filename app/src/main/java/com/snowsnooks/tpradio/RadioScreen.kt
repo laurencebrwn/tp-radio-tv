@@ -1,4 +1,4 @@
-package com.example.tpradio
+package com.snowsnooks.tpradio
 
 import CornerMarker
 import androidx.compose.foundation.layout.*

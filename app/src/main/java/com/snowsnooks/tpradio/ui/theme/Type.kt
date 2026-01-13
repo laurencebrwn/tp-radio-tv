@@ -1,4 +1,4 @@
-package com.example.tpradio.ui.theme
+package com.snowsnooks.tpradio.ui.theme
 
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily

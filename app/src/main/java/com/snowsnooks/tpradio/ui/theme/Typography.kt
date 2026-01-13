@@ -1,10 +1,10 @@
-package com.example.tpradio.ui.theme
+package com.snowsnooks.tpradio.ui.theme
 
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.tv.material3.Typography
-import com.example.tpradio.R
+import com.snowsnooks.tpradio.R
 
 // Create a FontFamily from your .ttf file
 val CustomFont = FontFamily(

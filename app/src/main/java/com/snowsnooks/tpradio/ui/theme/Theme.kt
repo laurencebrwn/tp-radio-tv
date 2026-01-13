@@ -1,4 +1,4 @@
-package com.example.tpradio.ui.theme
+package com.snowsnooks.tpradio.ui.theme
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween

@@ -1,4 +1,4 @@
-package com.example.tpradio
+package com.snowsnooks.tpradio
 
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
