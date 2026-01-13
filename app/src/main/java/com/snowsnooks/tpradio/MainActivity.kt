@@ -10,11 +10,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import android.content.ComponentName
 import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import kotlinx.coroutines.Dispatchers
@@ -185,7 +186,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(backgroundColor.copy(alpha = transitionController.backgroundAlpha))
+                        .windowInsetsPadding(WindowInsets(0))
+                        .background(backgroundColor.copy(alpha = transitionController.backgroundAlpha)),
+                    shape = RectangleShape
                 ) {
                     RadioScreen(
                         currentRoom = currentRoom,
