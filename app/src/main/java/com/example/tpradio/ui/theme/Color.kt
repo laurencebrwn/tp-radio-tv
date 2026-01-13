@@ -2,9 +2,10 @@
 
 package com.example.tpradio.ui.theme
 
-import androidx.tv.material3.darkColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.tv.material3.ColorScheme
 import androidx.tv.material3.ExperimentalTvMaterial3Api
+import androidx.tv.material3.darkColorScheme
 
 val Scheme5 = darkColorScheme(
     primary = Color(0xFF17358F),   // highlight
@@ -55,3 +56,5 @@ val Scheme1 = darkColorScheme(
     onSurface = Color(0xff259ff2),
     surfaceVariant = Color(0xFF333638)
 )
+
+val colorSchemes: List<ColorScheme> = listOf(Scheme1, Scheme2, Scheme3, Scheme4, Scheme5)

@@ -41,7 +41,8 @@ fun RadioScreen(
     isPaused: Boolean,
     onToggleSync: () -> Unit,
     onPlayRoom1: () -> Unit,
-    onPlayRoom2: () -> Unit
+    onPlayRoom2: () -> Unit,
+    videoOverlayAlpha: Float = 0f
 ) {
     Row(modifier = Modifier.fillMaxSize()) {
 
@@ -166,13 +167,14 @@ fun RadioScreen(
         }
 
         /* ───────────── RIGHT PANEL (5/6) ───────────── */
+        /* ───────────── RIGHT PANEL (5/6) ───────────── */
         Box(
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(5f)
                 .padding(16.dp)
         ) {
-            // Video in center
+            // Video in center with its own overlay
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -189,6 +191,17 @@ fun RadioScreen(
                 VideoPlayer(
                     videoFileName = videoFiles[currentSchemeIndex],
                     modifier = Modifier.size(300.dp)
+                )
+
+                // Video-only overlay
+                Box(
+                    modifier = Modifier
+                        .size(300.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(
+                                alpha = videoOverlayAlpha // Pass this as a parameter to RadioScreen
+                            )
+                        )
                 )
             }
 

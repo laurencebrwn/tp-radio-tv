@@ -3,6 +3,8 @@ package com.example.tpradio
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -13,6 +15,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.tv.material3.*
 import com.example.tpradio.ui.theme.TPRadioTheme
+import com.example.tpradio.ui.theme.colorSchemes
 import kotlinx.coroutines.delay
 import okhttp3.*
 import org.json.JSONObject
@@ -48,7 +51,9 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            var currentSchemeIndex by remember { mutableStateOf(0) }
+            val transitionController = remember { TransitionController() }
+            var currentSchemeIndex by remember { mutableIntStateOf(0) }
+            var displayedSchemeIndex by remember { mutableIntStateOf(0) }
             var syncToTrack by remember { mutableStateOf(false) }
             var currentRoom by remember { mutableStateOf<RadioRoom?>(null) }
             var nowPlaying by remember { mutableStateOf<NowPlayingResponse?>(null) }
@@ -56,11 +61,41 @@ class MainActivity : ComponentActivity() {
 
             val trackThemeIndex = nowPlaying?.getThemeIndex()
 
+            // Calculate target index
+            val targetIndex = if (syncToTrack && trackThemeIndex != null) {
+                trackThemeIndex
+            } else {
+                currentSchemeIndex
+            }
+
+            // Trigger transition when target changes
+            LaunchedEffect(targetIndex) {
+                if (targetIndex != displayedSchemeIndex) {
+                    transitionController.executeTransition {
+                        displayedSchemeIndex = targetIndex
+                    }
+                }
+            }
+
+            val animatedBackgroundColor by animateColorAsState(
+                targetValue = colorSchemes[displayedSchemeIndex].background,
+                animationSpec = tween(durationMillis = 1500), // Adjust fade duration here
+                label = "BackgroundColorFade"
+            )
+
             TPRadioTheme(
-                syncToTrack = syncToTrack,
-                trackThemeIndex = trackThemeIndex,
-                onSchemeChanged = { currentSchemeIndex = it }
+                themeIndex = displayedSchemeIndex
             ) {
+                // Auto-rotate logic
+                LaunchedEffect(syncToTrack) {
+                    if (!syncToTrack) {
+                        while (true) {
+                            delay(5_000) // 2 minutes
+                            currentSchemeIndex = (currentSchemeIndex + 1) % 5
+                        }
+                    }
+                }
+
                 LaunchedEffect(currentRoom) {
                     if (currentRoom == null) return@LaunchedEffect
                     while (true) {
@@ -74,26 +109,22 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
+                        // 4. Apply the animated color to the background
+                        .background(animatedBackgroundColor)
                 ) {
                     RadioScreen(
                         currentRoom = currentRoom,
                         nowPlaying = nowPlaying,
-                        currentSchemeIndex = currentSchemeIndex,
+                        currentSchemeIndex = displayedSchemeIndex,
                         syncToTrack = syncToTrack,
                         isPaused = isPaused,
+                        videoOverlayAlpha = transitionController.overlayAlpha, // ADD THIS
                         onToggleSync = { syncToTrack = !syncToTrack },
                         onPlayRoom1 = {
                             if (currentRoom == room1) {
-                                // Toggle pause for same room
                                 isPaused = !isPaused
-                                if (isPaused) {
-                                    player.pause()
-                                } else {
-                                    player.play()
-                                }
+                                if (isPaused) player.pause() else player.play()
                             } else {
-                                // Switch to Room 1
                                 currentRoom = room1
                                 isPaused = false
                                 playRoom(room1)
@@ -101,15 +132,9 @@ class MainActivity : ComponentActivity() {
                         },
                         onPlayRoom2 = {
                             if (currentRoom == room2) {
-                                // Toggle pause for same room
                                 isPaused = !isPaused
-                                if (isPaused) {
-                                    player.pause()
-                                } else {
-                                    player.play()
-                                }
+                                if (isPaused) player.pause() else player.play()
                             } else {
-                                // Switch to Room 2
                                 currentRoom = room2
                                 isPaused = false
                                 playRoom(room2)
