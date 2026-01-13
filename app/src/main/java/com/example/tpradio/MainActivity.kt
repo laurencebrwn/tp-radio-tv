@@ -348,8 +348,8 @@ class MainActivity : ComponentActivity() {
         try {
             val metadataBuilder = androidx.media3.common.MediaMetadata.Builder()
                 .setTitle(nowPlaying?.nowplaying ?: "TPRadio")
-                .setArtist("TranceParty Radio")
-                .setAlbumTitle(currentRoom?.name ?: "Radio Stream")
+                .setArtist(currentRoom?.name ?: "Radio Stream")
+                .setAlbumTitle("TranceParty Radio")
 
             // Load album art if available
             if (!nowPlaying?.coverart.isNullOrEmpty()) {
