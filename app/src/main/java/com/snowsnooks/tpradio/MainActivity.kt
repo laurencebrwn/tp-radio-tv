@@ -1,4 +1,4 @@
-package com.example.tpradio
+package com.snowsnooks.tpradio
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -23,8 +23,8 @@ import kotlinx.coroutines.withContext
 import java.net.URL
 
 import androidx.tv.material3.*
-import com.example.tpradio.ui.theme.TPRadioTheme
-import com.example.tpradio.ui.theme.colorSchemes
+import com.snowsnooks.tpradio.ui.theme.TPRadioTheme
+import com.snowsnooks.tpradio.ui.theme.colorSchemes
 import kotlinx.coroutines.delay
 import okhttp3.*
 import org.json.JSONObject

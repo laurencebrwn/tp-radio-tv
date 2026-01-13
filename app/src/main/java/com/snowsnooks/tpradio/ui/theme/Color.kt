@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalTvMaterial3Api::class)
 
-package com.example.tpradio.ui.theme
+package com.snowsnooks.tpradio.ui.theme
 
 import androidx.compose.ui.graphics.Color
 import androidx.tv.material3.ColorScheme
