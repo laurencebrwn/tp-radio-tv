@@ -62,6 +62,7 @@ dependencies {
     // For radio streaming
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media3.session)
 
     // Networking
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
