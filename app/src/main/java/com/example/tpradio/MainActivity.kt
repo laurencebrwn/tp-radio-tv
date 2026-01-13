@@ -1,15 +1,10 @@
 package com.example.tpradio
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -17,16 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
-import androidx.media3.common.AudioAttributes
-import androidx.media3.common.C
+import android.content.ComponentName
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.session.MediaSession
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 import java.net.URL
 
 import androidx.tv.material3.*
@@ -40,10 +33,10 @@ import java.io.IOException
 @OptIn(ExperimentalTvMaterial3Api::class)
 class MainActivity : ComponentActivity() {
 
-    private lateinit var player: ExoPlayer
-    private lateinit var mediaSession: MediaSession
+    private lateinit var mediaController: MediaController
     private val client = OkHttpClient()
     private var launchedFromMediaControls = false
+    private var pendingPlayRoom: RadioRoom? = null
 
     // State variables moved to activity level for persistence
     private var currentRoomState: RadioRoom? = null
@@ -71,50 +64,45 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        player = ExoPlayer.Builder(this).build().apply {
-            val audioAttributes = AudioAttributes.Builder()
-                .setUsage(C.USAGE_MEDIA)
-                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-                .build()
-            setAudioAttributes(audioAttributes, true)
-        }
+        // Connect to the MediaPlaybackService
+        val sessionToken = SessionToken(this, ComponentName(this, MediaPlaybackService::class.java))
+        val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
 
-        // Add listener to sync internal state with player state changes
-        player.addListener(object : androidx.media3.common.Player.Listener {
-            override fun onPlaybackStateChanged(playbackState: Int) {
-                runOnUiThread {
-                    when (playbackState) {
-                        androidx.media3.common.Player.STATE_READY -> {
-                            // Player is ready, update states
-                            isCurrentlyPlaying = player.isPlaying
-                            isPausedState = !player.isPlaying
-                        }
-                        androidx.media3.common.Player.STATE_ENDED,
-                        androidx.media3.common.Player.STATE_IDLE -> {
-                            // Playback stopped
-                            isCurrentlyPlaying = false
-                            isPausedState = true
+        controllerFuture.addListener({
+            mediaController = controllerFuture.get()
+
+            // Add listener to sync internal state with controller state changes
+            mediaController.addListener(object : androidx.media3.common.Player.Listener {
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    runOnUiThread {
+                        when (playbackState) {
+                            androidx.media3.common.Player.STATE_READY -> {
+                                // Player is ready, update states
+                                isCurrentlyPlaying = mediaController.isPlaying
+                                isPausedState = !mediaController.isPlaying
+                            }
+                            androidx.media3.common.Player.STATE_ENDED,
+                            androidx.media3.common.Player.STATE_IDLE -> {
+                                // Playback stopped
+                                isCurrentlyPlaying = false
+                                isPausedState = true
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onIsPlayingChanged(isPlaying: Boolean) {
-                runOnUiThread {
-                    isCurrentlyPlaying = isPlaying
-                    isPausedState = !isPlaying
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    runOnUiThread {
+                        isCurrentlyPlaying = isPlaying
+                        isPausedState = !isPlaying
+                    }
                 }
-            }
-        })
+            })
 
-        // Stop any existing playback to prevent multiple streams
-        player.stop()
-        player.clearMediaItems()
-
-        val sessionId = "TPRadioSession-${System.currentTimeMillis()}"
-        mediaSession = MediaSession.Builder(this, player)
-            .setId(sessionId)
-            .build()
+            // If there was a pending play request, execute it now
+            pendingPlayRoom?.let { playRoom(it) }
+            pendingPlayRoom = null
+        }, { runnable -> runnable.run() })
 
         setContent {
             val transitionController = remember { TransitionController() }
@@ -217,34 +205,38 @@ class MainActivity : ComponentActivity() {
                                 syncToTrack = !syncToTrack 
                             }
                         },
-                        onPlayRoom1 = {
-                            if (currentRoom == room1) {
-                                isPaused = !isPaused
-                                if (isPaused) {
-                                    player.pause()
-                                } else {
-                                    player.play()
-                                }
-                            } else {
-                                currentRoom = room1
-                                isPaused = false
-                                playRoom(room1)
-                            }
-                        },
-                        onPlayRoom2 = {
-                            if (currentRoom == room2) {
-                                isPaused = !isPaused
-                                if (isPaused) {
-                                    player.pause()
-                                } else {
-                                    player.play()
-                                }
-                            } else {
-                                currentRoom = room2
-                                isPaused = false
-                                playRoom(room2)
-                            }
-                        }
+                         onPlayRoom1 = {
+                             if (currentRoom == room1) {
+                                 isPaused = !isPaused
+                                 if (::mediaController.isInitialized) {
+                                     if (isPaused) {
+                                         mediaController.pause()
+                                     } else {
+                                         mediaController.play()
+                                     }
+                                 }
+                             } else {
+                                 currentRoom = room1
+                                 isPaused = false
+                                 playRoom(room1)
+                             }
+                         },
+                         onPlayRoom2 = {
+                             if (currentRoom == room2) {
+                                 isPaused = !isPaused
+                                 if (::mediaController.isInitialized) {
+                                     if (isPaused) {
+                                         mediaController.pause()
+                                     } else {
+                                         mediaController.play()
+                                     }
+                                 }
+                             } else {
+                                 currentRoom = room2
+                                 isPaused = false
+                                 playRoom(room2)
+                             }
+                         }
                     )
                 }
             }
@@ -252,31 +244,42 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun playRoom(room: RadioRoom) {
+        // Start the service
+        val intent = Intent(this, MediaPlaybackService::class.java)
+        startService(intent)
+
+        // Check if controller is ready
+        if (!::mediaController.isInitialized) {
+            // Defer playback until controller is ready
+            pendingPlayRoom = room
+            return
+        }
+
         // If same room is selected, just toggle play/pause
         if (currentRoomState == room) {
             isPausedState = !isPausedState
             if (isPausedState) {
-                player.pause()
+                mediaController.pause()
             } else {
-                player.play()
+                mediaController.play()
             }
             return
         }
 
         // Different room selected - stop current and start new
-        player.stop()
-        player.clearMediaItems()
+        mediaController.stop()
+        mediaController.clearMediaItems()
 
         val mediaItem = MediaItem.Builder()
             .setUri(room.streamUrl)
             .setMimeType("audio/mpeg")
             .build()
 
-        player.setMediaItem(mediaItem)
-        player.prepare()
+        mediaController.setMediaItem(mediaItem)
+        mediaController.prepare()
 
         // Always start playing new room (unless paused state is set)
-        player.play()
+        mediaController.play()
         isPausedState = false
 
         // Update state
@@ -341,6 +344,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private suspend fun updateMediaSessionMetadata(nowPlaying: NowPlayingResponse?, currentRoom: RadioRoom?) {
+        if (!::mediaController.isInitialized) return
         try {
             val metadataBuilder = androidx.media3.common.MediaMetadata.Builder()
                 .setTitle(nowPlaying?.nowplaying ?: "TPRadio")
@@ -372,8 +376,8 @@ class MainActivity : ComponentActivity() {
             val metadata = metadataBuilder.build()
 
             // Update the current MediaItem with new metadata
-            val currentMediaItem = player.currentMediaItem
-            if (currentMediaItem != null && player.currentMediaItemIndex >= 0) {
+            val currentMediaItem = mediaController.currentMediaItem
+            if (currentMediaItem != null && mediaController.currentMediaItemIndex >= 0) {
                 val uri = currentMediaItem.localConfiguration?.uri
                 if (uri != null) {
                     val updatedMediaItem = androidx.media3.common.MediaItem.Builder()
@@ -382,7 +386,7 @@ class MainActivity : ComponentActivity() {
                         .build()
                     withContext(Dispatchers.Main) {
                         try {
-                            player.replaceMediaItem(player.currentMediaItemIndex, updatedMediaItem)
+                            mediaController.replaceMediaItem(mediaController.currentMediaItemIndex, updatedMediaItem)
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -417,8 +421,12 @@ class MainActivity : ComponentActivity() {
         super.onResume()
         // If launched from media controls and we have a room selected, start playback
         if (launchedFromMediaControls && currentRoomState != null && !isPausedState) {
-            // Resume playback
-            player.play()
+            if (::mediaController.isInitialized) {
+                mediaController.play()
+            } else {
+                // Defer
+                currentRoomState?.let { pendingPlayRoom = it }
+            }
         }
     }
 
@@ -427,8 +435,9 @@ class MainActivity : ComponentActivity() {
         // Only release if not finishing (to prevent issues with configuration changes)
         if (isFinishing) {
             try {
-                mediaSession.release()
-                player.release()
+                if (::mediaController.isInitialized) {
+                    mediaController.release()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
