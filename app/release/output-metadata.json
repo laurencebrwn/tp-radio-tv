@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.example.tpradio",
+  "applicationId": "com.snowsnooks.tpradio",
   "variantName": "release",
   "elements": [
     {
