@@ -39,9 +39,9 @@ fun RadioScreen(
     nowPlaying: NowPlayingResponse?,
     currentSchemeIndex: Int,
     transitionProgress: Float,
-    onBackgroundColor: androidx.compose.ui.graphics.Color,
-    primaryColor: androidx.compose.ui.graphics.Color,
-    interpolatedBackgroundColor: androidx.compose.ui.graphics.Color,
+    onBackgroundColor: Color,
+    primaryColor: Color,
+    interpolatedBackgroundColor: Color,
     syncToTrack: Boolean,
     isPaused: Boolean,
     isCurrentlyPlaying: Boolean,
@@ -305,7 +305,7 @@ fun TVButton(
     textSize: Int = 12,
     textAlign: TextAlign = TextAlign.Center,
     textPadding: PaddingValues = PaddingValues(0.dp),
-    textColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background,
+    textColor: Color = MaterialTheme.colorScheme.background,
     enabled: Boolean = true,
     forceHighlight: Boolean = false
 ) {
@@ -351,8 +351,8 @@ fun VerticalMarquee(
     modifier: Modifier = Modifier,
     durationMillis: Int = 8000,
     spacing: Float = 40f,
-    textColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onBackground,
-    backgroundColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
+    backgroundColor: Color = MaterialTheme.colorScheme.background
 ) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp
