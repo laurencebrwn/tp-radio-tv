@@ -83,22 +83,22 @@ fun RadioScreen(
             ) {
                 // Frame corners around the full width
                 CornerMarker(
-                    up = true, right = true, down = true,
+                    right = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopStart)
                 )
                 CornerMarker(
-                    up = true, left = true, down = true,
+                    left = true, down = true, right = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
                 CornerMarker(
-                    right = true, up = true,
+                    right = true, up = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
                 CornerMarker(
-                    left = true, up = true, right = true,
+                    left = true, up = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
@@ -122,7 +122,7 @@ fun RadioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(240.dp)
+                    .weight(1f) // Take remaining space
                     .padding(8.dp)
             ) {
                 VerticalMarquee(
@@ -135,7 +135,8 @@ fun RadioScreen(
             // ── BOTTOM: Buttons
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()  // 👈 frame size
+                    .fillMaxWidth()
+                    .heightIn(min = 140.dp) // Ensure minimum height for buttons
             ) {
 
                 // ── Frame corners
@@ -163,7 +164,7 @@ fun RadioScreen(
                 // ── Actual buttons (smaller)
                 Column(
                     modifier = Modifier
-                        .padding(top = 20.dp, bottom = 20.dp)        // 👈 space from frame
+                        .padding(top = padding, bottom = padding)        // 👈 space from frame
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -176,9 +177,9 @@ fun RadioScreen(
                          onClick = onPlayRoom1,
                          modifier = Modifier
                              .width(buttonWidth)
-                             .padding(bottom = 8.dp),
+                             .padding(bottom = (padding * 0.4f)),
                          textAlign = TextAlign.Left,
-                         textPadding = PaddingValues(start = (padding * 0.8f)),
+                         textPadding = PaddingValues(start = (padding * 0.7f)),
                          textColor = interpolatedBackgroundColor
                      )
 
@@ -191,7 +192,7 @@ fun RadioScreen(
                          onClick = onPlayRoom2,
                          modifier = Modifier.width(buttonWidth),
                          textAlign = TextAlign.Left,
-                         textPadding = PaddingValues(start = (padding * 0.8f)),
+                         textPadding = PaddingValues(start = (padding * 0.7f)),
                          textColor = interpolatedBackgroundColor
                      )
                 }
