@@ -55,13 +55,16 @@ fun RadioScreen(
     val screenWidth = configuration.screenWidthDp.dp
     val screenHeight = configuration.screenHeightDp.dp
 
+    // Calculate base padding
+    val padding = (screenWidth * 0.02f).coerceAtMost(24.dp).coerceAtLeast(12.dp)
+
     // Calculate responsive sizes
-    val leftPanelWidth = (screenWidth * 0.25f).coerceAtMost(240.dp).coerceAtLeast(160.dp)
+    val leftPanelWidth = (screenWidth * 0.23f).coerceAtMost(220.dp).coerceAtLeast(140.dp)
     val albumArtSize = (screenHeight * 0.25f).coerceAtMost(180.dp).coerceAtLeast(100.dp)
     val videoSize = (screenHeight * 0.4f).coerceAtMost(400.dp).coerceAtLeast(250.dp)
     val buttonWidth = (leftPanelWidth * 0.8f).coerceAtMost(120.dp).coerceAtLeast(80.dp)
     val syncButtonSize = (screenWidth * 0.03f).coerceAtMost(35.dp).coerceAtLeast(20.dp)
-    val padding = (screenWidth * 0.02f).coerceAtMost(24.dp).coerceAtLeast(12.dp)
+    val syncMarkerSize = syncButtonSize + (padding * 2) // Size of the marker frame including padding
 
     Row(modifier = Modifier.fillMaxSize()) {
 
@@ -75,41 +78,43 @@ fun RadioScreen(
         ) {
 
             // ── TOP: Artwork
-            Box {
-                AsyncImage(
-                    model = nowPlaying?.coverart ?: R.drawable.placeholder_album,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(albumArtSize)
-                        .padding(padding)
-                )
-                // Top-left corner
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Frame corners around the full width
                 CornerMarker(
-                    right = true, down = true,
+                    up = true, right = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopStart)
                 )
-
-                // Top-right corner
                 CornerMarker(
-                    left = true, down = true, right = true,
+                    up = true, left = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
-
-                // Bottom-left corner
                 CornerMarker(
-                    right = true, up = true, down = true,
+                    right = true, up = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
-
-                // Bottom-right corner
                 CornerMarker(
-                    left = true, up = true, down = true,
+                    left = true, up = true, right = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
+
+                // Actual artwork (smaller, centered)
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = padding)
+                ) {
+                    AsyncImage(
+                        model = nowPlaying?.coverart ?: R.drawable.placeholder_album,
+                        contentDescription = null,
+                        modifier = Modifier.size(albumArtSize)
+                    )
+                }
             }
 
 
@@ -239,9 +244,9 @@ fun RadioScreen(
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(0.dp)
+                    .size(syncMarkerSize)
             ) {
-                // Corner markers around button
+                // Corner markers around button (square frame)
                 CornerMarker(
                     right = true, down = true,
                     color = onBackgroundColor,
@@ -257,25 +262,24 @@ fun RadioScreen(
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
+                CornerMarker(
+                    left = true, up = true,
+                    color = onBackgroundColor,
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                )
 
                 // Button centered in corner markers
-                Box(
+                TVButton(
+                    text = if (syncToTrack) "ᵀᴾ" else "ⴵ",
+                    onClick = onToggleSync,
                     modifier = Modifier
-                        .padding(padding)
                         .align(Alignment.Center)
-                ) {
-                    TVButton(
-                        text = if (syncToTrack) "ᵀᴾ" else "ⴵ",
-                        onClick = onToggleSync,
-                        modifier = Modifier
-                            .width(syncButtonSize)
-                            .height(syncButtonSize),
-                        textSize = (syncButtonSize.value * 0.4f).toInt().coerceAtLeast(8),
-                        textColor = interpolatedBackgroundColor,
-                        enabled = !isTransitioning,
-                        forceHighlight = syncToTrack
-                    )
-                }
+                        .size(syncButtonSize),
+                    textSize = (syncButtonSize.value * 0.4f).toInt().coerceAtLeast(8),
+                    textColor = interpolatedBackgroundColor,
+                    enabled = !isTransitioning,
+                    forceHighlight = syncToTrack
+                )
             }
             CornerMarker(
                 left = true, down = true,
