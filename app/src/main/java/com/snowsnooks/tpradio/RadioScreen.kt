@@ -136,7 +136,7 @@ fun RadioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 140.dp) // Ensure minimum height for buttons
+                    .heightIn(min = 120.dp) // Ensure minimum height for buttons
             ) {
 
                 // ── Frame corners
