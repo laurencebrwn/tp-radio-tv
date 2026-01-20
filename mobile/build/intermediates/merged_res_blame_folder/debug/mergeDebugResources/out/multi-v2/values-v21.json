@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-48:/values-v21/values-v21.xml",
+            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-50:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "/home/laurence/.gradle/caches/9.1.0/transforms/59709509fc9fc6bd9372ebfdac6c8355/transformed/media3-session-1.9.0/res/values-v21/values-v21.xml",
@@ -14,12 +14,12 @@
                         "endOffsets": "212,369,531,692"
                     },
                     "to": {
-                        "startLines": "8,11,15,19",
+                        "startLines": "14,17,21,25",
                         "startColumns": "4,4,4,4",
-                        "startOffsets": "610,772,1055,1345",
-                        "endLines": "10,13,17,21",
+                        "startOffsets": "956,1118,1401,1691",
+                        "endLines": "16,19,23,27",
                         "endColumns": "10,10,10,10",
-                        "endOffsets": "767,924,1212,1501"
+                        "endOffsets": "1113,1270,1558,1847"
                     }
                 },
                 {
@@ -33,12 +33,31 @@
                         "endOffsets": "168,232,299,363,479,605,731,859,1031,1383"
                     },
                     "to": {
-                        "startLines": "2,3,4,5,6,7,14,18,22,25",
+                        "startLines": "2,4,5,6,12,13,20,24,28,31",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,173,237,304,368,484,929,1217,1506,1678",
-                        "endLines": "2,3,4,5,6,7,14,18,24,29",
+                        "startOffsets": "55,232,296,363,714,830,1275,1563,1852,2024",
+                        "endLines": "2,4,5,6,12,13,20,24,30,35",
                         "endColumns": "117,63,66,63,115,125,125,127,12,12",
-                        "endOffsets": "168,232,299,363,479,605,1050,1340,1673,2025"
+                        "endOffsets": "168,291,358,422,825,951,1396,1686,2019,2371"
+                    }
+                },
+                {
+                    "source": "/home/laurence/.gradle/caches/9.1.0/transforms/169731883e31cb75423e6ac74beee287/transformed/media3-ui-1.9.0/res/values-v21/values-v21.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,114",
+                        "endLines": "2,7",
+                        "endColumns": "58,10",
+                        "endOffsets": "109,396"
+                    },
+                    "to": {
+                        "startLines": "3,7",
+                        "startColumns": "4,4",
+                        "startOffsets": "173,427",
+                        "endLines": "3,11",
+                        "endColumns": "58,10",
+                        "endOffsets": "227,709"
                     }
                 }
             ]

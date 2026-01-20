@@ -7,6 +7,7 @@ INJECTED from /home/laurence/AndroidStudioProjects/TPRadio/mobile/src/main/Andro
 MERGED from [:core:data] /home/laurence/AndroidStudioProjects/TPRadio/core/data/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:core:domain] /home/laurence/AndroidStudioProjects/TPRadio/core/domain/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
 MERGED from [:core:playback] /home/laurence/AndroidStudioProjects/TPRadio/core/playback/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.media3:media3-ui:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/169731883e31cb75423e6ac74beee287/transformed/media3-ui-1.9.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media3:media3-session:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/59709509fc9fc6bd9372ebfdac6c8355/transformed/media3-session-1.9.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media3:media3-extractor:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/d1c005f635de815238047c76f44a08d0/transformed/media3-extractor-1.9.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media3:media3-container:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/0948e14f98de1298eb8c7d6f9c8790df/transformed/media3-container-1.9.0/AndroidManifest.xml:17:1-22:12
@@ -41,7 +42,9 @@ MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] /home/laur
 MERGED from [androidx.emoji2:emoji2:1.3.0] /home/laurence/.gradle/caches/9.1.0/transforms/b39bc5689f6d86f1126440d0485d1eaf/transformed/emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/laurence/.gradle/caches/9.1.0/transforms/d69961d4ae087e2663e53ca6ec2a3312/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/laurence/.gradle/caches/9.1.0/transforms/0950f2eeceb8b0bfe5293fee0a70c781/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] /home/laurence/.gradle/caches/9.1.0/transforms/e13d4b4db586dac82e76755197853df9/transformed/recyclerview-1.3.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.media:media:1.7.0] /home/laurence/.gradle/caches/9.1.0/transforms/d80b400fadea1c8ff590ae58a45a218e/transformed/media-1.7.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.customview:customview:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/dcae1eca1a1d66b568bc69bba9c25048/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.autofill:autofill:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/9b824aeafc5b4cf00098858e951fbf4b/transformed/autofill-1.0.0/AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.graphics:graphics-path:1.0.1] /home/laurence/.gradle/caches/9.1.0/transforms/5d95cadbddaadf0a34fb267a87c4178e/transformed/graphics-path-1.0.1/AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] /home/laurence/.gradle/caches/9.1.0/transforms/4c05d7d5fb939579a83b6fb6040a296b/transformed/appcompat-resources-1.6.1/AndroidManifest.xml:17:1-22:12
@@ -154,6 +157,8 @@ MERGED from [:core:domain] /home/laurence/AndroidStudioProjects/TPRadio/core/dom
 MERGED from [:core:domain] /home/laurence/AndroidStudioProjects/TPRadio/core/domain/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:core:playback] /home/laurence/AndroidStudioProjects/TPRadio/core/playback/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
 MERGED from [:core:playback] /home/laurence/AndroidStudioProjects/TPRadio/core/playback/build/intermediates/merged_manifest/debug/processDebugManifest/AndroidManifest.xml:5:5-44
+MERGED from [androidx.media3:media3-ui:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/169731883e31cb75423e6ac74beee287/transformed/media3-ui-1.9.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.media3:media3-ui:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/169731883e31cb75423e6ac74beee287/transformed/media3-ui-1.9.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.media3:media3-session:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/59709509fc9fc6bd9372ebfdac6c8355/transformed/media3-session-1.9.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.media3:media3-session:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/59709509fc9fc6bd9372ebfdac6c8355/transformed/media3-session-1.9.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.media3:media3-extractor:1.9.0] /home/laurence/.gradle/caches/9.1.0/transforms/d1c005f635de815238047c76f44a08d0/transformed/media3-extractor-1.9.0/AndroidManifest.xml:20:5-44
@@ -222,8 +227,12 @@ MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/laurence/.gradle/ca
 MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /home/laurence/.gradle/caches/9.1.0/transforms/d69961d4ae087e2663e53ca6ec2a3312/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/laurence/.gradle/caches/9.1.0/transforms/0950f2eeceb8b0bfe5293fee0a70c781/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] /home/laurence/.gradle/caches/9.1.0/transforms/0950f2eeceb8b0bfe5293fee0a70c781/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] /home/laurence/.gradle/caches/9.1.0/transforms/e13d4b4db586dac82e76755197853df9/transformed/recyclerview-1.3.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.3.0] /home/laurence/.gradle/caches/9.1.0/transforms/e13d4b4db586dac82e76755197853df9/transformed/recyclerview-1.3.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.media:media:1.7.0] /home/laurence/.gradle/caches/9.1.0/transforms/d80b400fadea1c8ff590ae58a45a218e/transformed/media-1.7.0/AndroidManifest.xml:5:5-44
 MERGED from [androidx.media:media:1.7.0] /home/laurence/.gradle/caches/9.1.0/transforms/d80b400fadea1c8ff590ae58a45a218e/transformed/media-1.7.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/dcae1eca1a1d66b568bc69bba9c25048/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/dcae1eca1a1d66b568bc69bba9c25048/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.autofill:autofill:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/9b824aeafc5b4cf00098858e951fbf4b/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.autofill:autofill:1.0.0] /home/laurence/.gradle/caches/9.1.0/transforms/9b824aeafc5b4cf00098858e951fbf4b/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.graphics:graphics-path:1.0.1] /home/laurence/.gradle/caches/9.1.0/transforms/5d95cadbddaadf0a34fb267a87c4178e/transformed/graphics-path-1.0.1/AndroidManifest.xml:5:5-44

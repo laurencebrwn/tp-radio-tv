@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-48:/values-as/values-as.xml",
+            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-50:/values-as/values-as.xml",
             "map": [
                 {
                     "source": "/home/laurence/.gradle/caches/9.1.0/transforms/4a25233ee10191eb25f5a6e6aa288176/transformed/material3-release/res/values-as/values-as.xml",

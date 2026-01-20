@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-48:/values-or/values-or.xml",
+            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-50:/values-or/values-or.xml",
             "map": [
                 {
                     "source": "/home/laurence/.gradle/caches/9.1.0/transforms/83bba3a4e10e19e680ed55acc06d160d/transformed/core-1.13.1/res/values-or/values-or.xml",

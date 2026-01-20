@@ -56,6 +56,11 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.8.0")
 
+    // Media3 for mobile playback
+    implementation("androidx.media3:media3-exoplayer:1.9.0")
+    implementation("androidx.media3:media3-ui:1.9.0")
+    implementation("androidx.media3:media3-session:1.9.0")
+
     // Image loading
     implementation("io.coil-kt:coil-compose:2.5.0")
 }

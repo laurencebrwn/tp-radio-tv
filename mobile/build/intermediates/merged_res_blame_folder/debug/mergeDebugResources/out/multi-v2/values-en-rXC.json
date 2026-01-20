@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-48:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-50:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
                     "source": "/home/laurence/.gradle/caches/9.1.0/transforms/f9d1c6098b5b2f9e39265af4750cd23b/transformed/ui-release/res/values-en-rXC/values-en-rXC.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-48:/values-en-rCA/values-en-rCA.xml",
+            "outputFile": "com.snowsnooks.mobile-mergeDebugResources-50:/values-en-rCA/values-en-rCA.xml",
             "map": [
                 {
                     "source": "/home/laurence/.gradle/caches/9.1.0/transforms/259340c40ce2e2da806a284e6f147740/transformed/foundation-release/res/values-en-rCA/values-en-rCA.xml",
