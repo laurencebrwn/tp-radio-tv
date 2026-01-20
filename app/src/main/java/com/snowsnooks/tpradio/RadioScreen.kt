@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.tv.material3.*
 import coil.compose.AsyncImage
 import androidx.compose.ui.Alignment
@@ -38,9 +39,9 @@ fun RadioScreen(
     nowPlaying: NowPlayingResponse?,
     currentSchemeIndex: Int,
     transitionProgress: Float,
-    onBackgroundColor: androidx.compose.ui.graphics.Color,
-    primaryColor: androidx.compose.ui.graphics.Color,
-    interpolatedBackgroundColor: androidx.compose.ui.graphics.Color,
+    onBackgroundColor: Color,
+    primaryColor: Color,
+    interpolatedBackgroundColor: Color,
     syncToTrack: Boolean,
     isPaused: Boolean,
     isCurrentlyPlaying: Boolean,
@@ -50,53 +51,70 @@ fun RadioScreen(
     onPlayRoom2: () -> Unit,
     videoOverlayAlpha: Float = 0f
 ) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    val screenHeight = configuration.screenHeightDp.dp
+
+    // Calculate base padding
+    val padding = (screenWidth * 0.02f).coerceAtMost(24.dp).coerceAtLeast(12.dp)
+
+    // Calculate responsive sizes
+    val leftPanelWidth = (screenWidth * 0.23f).coerceAtMost(220.dp).coerceAtLeast(140.dp)
+    val albumArtSize = (screenHeight * 0.25f).coerceAtMost(180.dp).coerceAtLeast(100.dp)
+    val videoSize = (screenHeight * 0.4f).coerceAtMost(400.dp).coerceAtLeast(250.dp)
+    val buttonWidth = (leftPanelWidth * 0.8f).coerceAtMost(120.dp).coerceAtLeast(80.dp)
+    val syncButtonSize = (screenWidth * 0.03f).coerceAtMost(35.dp).coerceAtLeast(20.dp)
+    val syncMarkerSize = syncButtonSize + (padding * 2) // Size of the marker frame including padding
+
     Row(modifier = Modifier.fillMaxSize()) {
 
-        /* ───────────── LEFT PANEL (1/6) ───────────── */
+        /* ───────────── LEFT PANEL ───────────── */
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .width(185.dp)
-                .padding(16.dp),
+                .width(leftPanelWidth)
+                .padding(padding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             // ── TOP: Artwork
-            Box {
-                AsyncImage(
-                    model = nowPlaying?.coverart ?: R.drawable.placeholder_album,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(140.dp)
-                        .padding(16.dp)
-                )
-                // Top-left corner
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                // Frame corners around the full width
                 CornerMarker(
                     right = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopStart)
                 )
-
-                // Top-right corner
                 CornerMarker(
                     left = true, down = true, right = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
-
-                // Bottom-left corner
                 CornerMarker(
                     right = true, up = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
-
-                // Bottom-right corner
                 CornerMarker(
                     left = true, up = true, down = true,
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomEnd)
                 )
+
+                // Actual artwork (smaller, centered)
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = padding)
+                ) {
+                    AsyncImage(
+                        model = nowPlaying?.coverart ?: R.drawable.placeholder_album,
+                        contentDescription = null,
+                        modifier = Modifier.size(albumArtSize)
+                    )
+                }
             }
 
 
@@ -104,7 +122,7 @@ fun RadioScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(240.dp)
+                    .weight(1f) // Take remaining space
                     .padding(8.dp)
             ) {
                 VerticalMarquee(
@@ -117,7 +135,8 @@ fun RadioScreen(
             // ── BOTTOM: Buttons
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()  // 👈 frame size
+                    .fillMaxWidth()
+                    .heightIn(min = 120.dp) // Ensure minimum height for buttons
             ) {
 
                 // ── Frame corners
@@ -145,37 +164,37 @@ fun RadioScreen(
                 // ── Actual buttons (smaller)
                 Column(
                     modifier = Modifier
-                        .padding(top = 20.dp, bottom = 20.dp)        // 👈 space from frame
+                        .padding(top = padding, bottom = padding)        // 👈 space from frame
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    TVButton(
-                        text = when {
-                            currentRoom?.name == "Room 1" && !isCurrentlyPlaying -> "ROOM 1   II"
-                            currentRoom?.name == "Room 1" && isCurrentlyPlaying -> "ROOM 1   ▶"
-                            else -> "ROOM 1"
-                        },
-                        onClick = onPlayRoom1,
-                        modifier = Modifier
-                            .width(100.dp)
-                            .padding(bottom = 8.dp),
-                        textAlign = TextAlign.Left,
-                        textPadding = PaddingValues(start = 15.dp),
-                        textColor = interpolatedBackgroundColor
-                    )
+                     TVButton(
+                         text = when {
+                             currentRoom?.name == "Room 1" && !isCurrentlyPlaying -> "ROOM 1   II"
+                             currentRoom?.name == "Room 1" && isCurrentlyPlaying -> "ROOM 1   ▶"
+                             else -> "ROOM 1"
+                         },
+                         onClick = onPlayRoom1,
+                         modifier = Modifier
+                             .width(buttonWidth)
+                             .padding(bottom = (padding * 0.4f)),
+                         textAlign = TextAlign.Left,
+                         textPadding = PaddingValues(start = (padding * 0.7f)),
+                         textColor = interpolatedBackgroundColor
+                     )
 
-                    TVButton(
-                        text = when {
-                            currentRoom?.name == "Room 2" && !isCurrentlyPlaying -> "ROOM 2   II"
-                            currentRoom?.name == "Room 2" && isCurrentlyPlaying -> "ROOM 2   ▶"
-                            else -> "ROOM 2"
-                        },
-                        onClick = onPlayRoom2,
-                        modifier = Modifier.width(100.dp),
-                        textAlign = TextAlign.Left,
-                        textPadding = PaddingValues(start = 15.dp),
-                        textColor = interpolatedBackgroundColor
-                    )
+                     TVButton(
+                         text = when {
+                             currentRoom?.name == "Room 2" && !isCurrentlyPlaying -> "ROOM 2   II"
+                             currentRoom?.name == "Room 2" && isCurrentlyPlaying -> "ROOM 2   ▶"
+                             else -> "ROOM 2"
+                         },
+                         onClick = onPlayRoom2,
+                         modifier = Modifier.width(buttonWidth),
+                         textAlign = TextAlign.Left,
+                         textPadding = PaddingValues(start = (padding * 0.7f)),
+                         textColor = interpolatedBackgroundColor
+                     )
                 }
 
             }
@@ -184,19 +203,18 @@ fun RadioScreen(
 
         }
 
-        /* ───────────── RIGHT PANEL (5/6) ───────────── */
-        /* ───────────── RIGHT PANEL (5/6) ───────────── */
+        /* ───────────── RIGHT PANEL ───────────── */
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .weight(5f)
-                .padding(16.dp)
+                .weight(1f)
+                .padding(padding)
         ) {
             // Video in center with its own overlay
             Box(
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .padding(end = 16.dp)
+                    .padding(end = padding)
             ) {
                 val videoFiles = listOf(
                     "video_1.mp4",
@@ -208,13 +226,13 @@ fun RadioScreen(
 
                 VideoPlayer(
                     videoFileName = videoFiles[currentSchemeIndex],
-                    modifier = Modifier.size(300.dp)
+                    modifier = Modifier.size(videoSize)
                 )
 
                 // Video-only overlay
                 Box(
                     modifier = Modifier
-                        .size(300.dp)
+                        .size(videoSize)
                         .background(
                             primaryColor.copy(
                                 alpha = videoOverlayAlpha // Pass this as a parameter to RadioScreen
@@ -227,9 +245,9 @@ fun RadioScreen(
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(0.dp)
+                    .size(syncMarkerSize)
             ) {
-                // Corner markers around button
+                // Corner markers around button (square frame)
                 CornerMarker(
                     right = true, down = true,
                     color = onBackgroundColor,
@@ -245,25 +263,24 @@ fun RadioScreen(
                     color = onBackgroundColor,
                     modifier = Modifier.align(Alignment.BottomStart)
                 )
+                CornerMarker(
+                    left = true, up = true,
+                    color = onBackgroundColor,
+                    modifier = Modifier.align(Alignment.BottomEnd)
+                )
 
                 // Button centered in corner markers
-                Box(
+                TVButton(
+                    text = if (syncToTrack) "ᵀᴾ" else "ⴵ",
+                    onClick = onToggleSync,
                     modifier = Modifier
-                        .padding(20.dp)
                         .align(Alignment.Center)
-                ) {
-                    TVButton(
-                        text = if (syncToTrack) "ᵀᴾ" else "ⴵ",
-                        onClick = onToggleSync,
-                        modifier = Modifier
-                            .width(25.dp)
-                            .height(25.dp),
-                        textSize = 12,
-                        textColor = interpolatedBackgroundColor,
-                        enabled = !isTransitioning,
-                        forceHighlight = syncToTrack
-                    )
-                }
+                        .size(syncButtonSize),
+                    textSize = (syncButtonSize.value * 0.4f).toInt().coerceAtLeast(8),
+                    textColor = interpolatedBackgroundColor,
+                    enabled = !isTransitioning,
+                    forceHighlight = syncToTrack
+                )
             }
             CornerMarker(
                 left = true, down = true,
@@ -288,7 +305,7 @@ fun TVButton(
     textSize: Int = 12,
     textAlign: TextAlign = TextAlign.Center,
     textPadding: PaddingValues = PaddingValues(0.dp),
-    textColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background,
+    textColor: Color = MaterialTheme.colorScheme.background,
     enabled: Boolean = true,
     forceHighlight: Boolean = false
 ) {
@@ -334,9 +351,12 @@ fun VerticalMarquee(
     modifier: Modifier = Modifier,
     durationMillis: Int = 8000,
     spacing: Float = 40f,
-    textColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onBackground,
-    backgroundColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
+    backgroundColor: Color = MaterialTheme.colorScheme.background
 ) {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp
+    val textSize = (screenHeight * 0.025f).coerceAtMost(20f).coerceAtLeast(12f).sp
     val textWidthPx = remember { mutableStateOf(0f) }
     val containerHeightPx = remember { mutableStateOf(0f) }
 
@@ -371,7 +391,7 @@ fun VerticalMarquee(
         BasicText(
             text = "$text ᵀᴾ ",
             style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 16.sp,
+                fontSize = textSize,
                 color = textColor
             ),
             softWrap = false,
@@ -390,7 +410,7 @@ fun VerticalMarquee(
         BasicText(
             text = "$text ᵀᴾ ",
             style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 16.sp,
+                fontSize = textSize,
                 color = textColor
             ),
             softWrap = false,
@@ -406,7 +426,7 @@ fun VerticalMarquee(
         BasicText(
             text = "$text ᵀᴾ ",
             style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 16.sp,
+                fontSize = textSize,
                 color = textColor
             ),
             softWrap = false,
@@ -422,7 +442,7 @@ fun VerticalMarquee(
         BasicText(
             text = "$text ᵀᴾ ",
             style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 16.sp,
+                fontSize = textSize,
                 color = textColor
             ),
             softWrap = false,
