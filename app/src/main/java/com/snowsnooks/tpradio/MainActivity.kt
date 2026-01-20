@@ -16,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.lifecycleScope
 import android.content.ComponentName
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Player
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import kotlinx.coroutines.Dispatchers
@@ -26,16 +28,17 @@ import java.net.URL
 import androidx.tv.material3.*
 import com.snowsnooks.tpradio.ui.theme.TPRadioTheme
 import com.snowsnooks.tpradio.ui.theme.colorSchemes
+import com.snowsnooks.core.domain.RadioRoom
+import com.snowsnooks.core.domain.NowPlayingResponse
+import com.snowsnooks.core.data.RadioApiRepository
+import com.snowsnooks.core.playback.MediaPlaybackService
 import kotlinx.coroutines.delay
-import okhttp3.*
-import org.json.JSONObject
-import java.io.IOException
 
 @OptIn(ExperimentalTvMaterial3Api::class)
 class MainActivity : ComponentActivity() {
 
     private lateinit var mediaController: MediaController
-    private val client = OkHttpClient()
+    private val radioRepository = RadioApiRepository()
     private var launchedFromMediaControls = false
     private var pendingPlayRoom: RadioRoom? = null
 
@@ -170,18 +173,18 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                LaunchedEffect(currentRoom) {
-                    if (currentRoom == null) return@LaunchedEffect
-                    while (true) {
-                         fetchNowPlaying(currentRoom!!.metadataUrl) {
-                             nowPlaying = it
-                             lifecycleScope.launch {
-                                 updateMediaSessionMetadata(it, currentRoom)
-                             }
-                         }
-                        delay(10_000)
-                    }
-                }
+                        LaunchedEffect(currentRoom) {
+                     if (currentRoom == null) return@LaunchedEffect
+                     while (true) {
+                          radioRepository.fetchNowPlaying(currentRoom!!.metadataUrl, onResult = {
+                              nowPlaying = it
+                              lifecycleScope.launch {
+                                  updateMediaSessionMetadata(it, currentRoom)
+                              }
+                          })
+                         delay(10_000)
+                     }
+                 }
 
                 Surface(
                     modifier = Modifier
@@ -315,36 +318,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun fetchNowPlaying(
-        url: String,
-        onResult: (NowPlayingResponse) -> Unit
-    ) {
-        val request = Request.Builder().url(url).build()
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let { json ->
-                    val obj = JSONObject(json)
-
-                    val data = NowPlayingResponse(
-                        status = obj.optBoolean("status"),
-                        nowplaying = obj.optString("nowplaying"),
-                        coverart = obj.optString("coverart"),
-                        bitrate = obj.optString("bitrate"),
-                        format = obj.optString("format")
-                    )
-
-                    runOnUiThread {
-                        onResult(data)
-                    }
-                }
-            }
-        })
-    }
 
     private suspend fun updateMediaSessionMetadata(nowPlaying: NowPlayingResponse?, currentRoom: RadioRoom?) {
         if (!::mediaController.isInitialized) return

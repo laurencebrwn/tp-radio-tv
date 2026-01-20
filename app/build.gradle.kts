@@ -59,13 +59,15 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    // For radio streaming
+    // Core modules
+    implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(project(":core:playback"))
+
+    // Media3 for TV app UI
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.session)
-
-    // Networking
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Image loading for Compose
     implementation("io.coil-kt:coil-compose:2.5.0")
