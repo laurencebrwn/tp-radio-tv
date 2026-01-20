@@ -27,7 +27,8 @@
         android:extractNativeLibs="false"
         android:icon="@android:drawable/ic_media_play"
         android:label="TPRadio Mobile"
-        android:supportsRtl="true" >
+        android:supportsRtl="true"
+        android:testOnly="true" >
         <activity
             android:name="com.snowsnooks.mobile.MainActivity"
             android:exported="true" >

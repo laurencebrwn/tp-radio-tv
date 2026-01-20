@@ -34,7 +34,7 @@
         </activity>
 
         <service
-            android:name=".MediaPlaybackService"
+            android:name="com.snowsnooks.core.playback.MediaPlaybackService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback">
             <intent-filter>
