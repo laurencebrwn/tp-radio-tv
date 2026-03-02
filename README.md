@@ -11,4 +11,4 @@ A simple Android TV app for streaming Evian Christ's [TP Radio](https://www.tran
 - Now playing and cover art update live with radio.
 - Trance Party season theming, with an option to switch between syncing the theme with the respective Trance Party of the set that is playing, or to rotate every 2 minutes, until forever fades awayᵀᴾ.
 
-https://github.com/user-attachments/assets/39341bf6-9c39-4eed-97f4-0bfc2339cc59
+![usage-video](https://github.com/user-attachments/assets/b374e657-0bb5-4bc5-8ab2-1f87e59e3f37)
